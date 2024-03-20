@@ -8,12 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var isNight = false
+    
     var body: some View {
         ZStack {
-            BackgroundView(topColor: .blue, bottomColor: Color("LightBlue"))
+            BackgroundView(topColor: isNight ? .black: .blue, bottomColor: isNight ? .gray : Color("LightBlue"))
             VStack {
                 CityTextView(cityName: "San Diego")
-                mainWeatherStatusView(imageName: "cloud.sun.fill", temp: 60)
+//                Image("rain")
+//                    .renderingMode(.original)
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fit)
+//                    .frame(width: 180, height: 180)
+                mainWeatherStatusView(imageName: isNight ? "moon.stars.fill" : "cloud.sun.fill", temp: 60)
                 
                 HStack(spacing: 20) {
                     WeatherDayView(day: "TUE", imageName: "cloud.sun.fill", temp: 86)
@@ -23,12 +30,10 @@ struct ContentView: View {
                     WeatherDayView(day: "SAT", imageName: "snow", temp: 36)
                 }
                 Spacer()
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                  Text("Change Day Time")
-                        .frame(width: 280, height: 50)
-                        .background(.white)
-                        .font(.system(size: 20, weight: .bold, design: .default))
-                        .cornerRadius(10)
+                Button(action: {
+                    isNight.toggle()
+                }, label: {
+                    buttonView(title: "Change", textColor: .blue, backgroundColor: .white)
                 })
                 Spacer()
             }
@@ -102,5 +107,20 @@ struct mainWeatherStatusView: View {
                 .foregroundStyle(.white)
         }
         .padding(.bottom, 40)
+    }
+}
+
+struct buttonView: View {
+    var title: String
+    var textColor: Color
+    var backgroundColor: Color
+    
+    var body: some View {
+        Text(title)
+              .frame(width: 280, height: 50)
+              .background(backgroundColor)
+              .foregroundColor(textColor)
+              .font(.system(size: 20, weight: .bold, design: .default))
+              .cornerRadius(10)
     }
 }
